@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OIA Society</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+  --bg:#0b0f14;
+  --panel:#111827;
+  --panel2:#1f2937;
+  --accent:#6366f1;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
+body{background:var(--bg);color:var(--text);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+/* ================= HEADER ================= */
+header{
+  position:fixed;top:0;width:100%;height:70px;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(12px);
+  display:flex;justify-content:center;align-items:center;
+  z-index:1000;transition:.3s;
+}
+header.hide{transform:translateY(-100%)}
+
+nav a{
+  margin:0 1.3rem;
+  color:var(--muted);
+  font-weight:600;
+}
+nav a:hover{color:#fff}
+
+.instagram{
+  position:absolute;
+  right:25px;
+  font-size:1.6rem;
+  background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+/* ================= BUTTON ================= */
+.btn{
+  padding:.9rem 2rem;
+  border-radius:14px;
+  font-weight:700;
+  background:linear-gradient(135deg,#ff416c,#ff4b2b,#1fa2ff,#12d8fa);
+  background-size:300% 300%;
+  animation:grad 6s ease infinite;
+  color:white;
+  display:inline-block;
+  margin:.5rem;
+}
+@keyframes grad{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* ================= HERO ================= */
+.hero{
+  min-height:100vh;
+  padding:2rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+.hero img{width:160px;margin-bottom:1rem}
+.hero h1{font-size:3rem}
+.hero p{color:var(--muted);max-width:650px}
+
+/* ================= SECTIONS ================= */
+section{
+  padding:5rem 6%;
+  max-width:1200px;
+  margin:auto;
+  opacity:0;
+  transform:translateY(40px);
+  transition:.8s ease;
+}
+section.show{
+  opacity:1;
+  transform:none;
+}
+.section-title{
+  text-align:center;
+  font-size:2.2rem;
+  margin-bottom:2rem;
+}
+
+/* ================= NOTICE BOARD ================= */
+.notice{
+  background:var(--panel2);
+  padding:1.5rem;
+  border-radius:12px;
+  border-left:5px solid var(--accent);
+  margin-bottom:1rem;
+}
+.notice.pinned{border-left-color:#f59e0b}
+
+/* ================= CAROUSEL ================= */
+.carousel{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:1.5rem;
+}
+.arrow{
+  font-size:2rem;
+  cursor:pointer;
+  padding:.7rem 1.1rem;
+  border-radius:50%;
+  background:#1f2937;
+}
+.arrow:hover{background:var(--accent)}
+
+.card{
+  width:280px;
+  background:var(--panel);
+  border-radius:18px;
+  padding:1rem;
+  text-align:center;
+  animation:fade .5s ease;
+  cursor:pointer;
+}
+@keyframes fade{
+  from{opacity:0;transform:scale(.9)}
+  to{opacity:1;transform:scale(1)}
+}
+.card img{
+  width:100%;
+  height:300px;
+  object-fit:cover;
+  border-radius:14px;
+}
+.card h3{margin:.6rem 0 .2rem}
+.card p{color:var(--muted)}
+
+/* ================= PROFILE OVERLAY ================= */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(12px);
+  display:none;
+  z-index:3000;
+}
+.overlay.open{display:flex}
+
+.profile{
+  margin:auto;
+  background:#020617;
+  padding:2rem;
+  width:90%;
+  max-width:500px;
+  border-radius:22px;
+  text-align:center;
+  animation:slide .5s ease;
+}
+@keyframes slide{
+  from{transform:translateX(100%)}
+  to{transform:none}
+}
+.profile img{
+  width:200px;
+  height:200px;
+  object-fit:cover;
+  border-radius:50%;
+  margin-bottom:1rem;
+}
+.close{
+  position:absolute;
+  top:25px;right:30px;
+  font-size:1.5rem;
+  cursor:pointer;
+}
+
+/* ================= FEEDBACK ================= */
+.feedback-btn{
+  position:fixed;
+  bottom:30px;right:30px;
+  background:var(--accent);
+  padding:1rem 1.4rem;
+  border-radius:999px;
+  font-weight:600;
+  cursor:pointer;
+  z-index:2000;
+}
+.modal{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.6);
+  display:none;
+  align-items:center;justify-content:center;
+  z-index:2500;
+}
+.modal-content{
+  background:#020617;
+  padding:2rem;
+  border-radius:14px;
+  width:90%;max-width:450px;
+}
+.modal input,.modal textarea{
+  width:100%;
+  padding:.7rem;
+  margin:.5rem 0;
+  border-radius:8px;
+  border:none;
+  background:#1f2937;
+  color:white;
+}
+
+/* ================= FOOTER ================= */
+footer{
+  padding:3rem;
+  text-align:center;
+  color:var(--muted);
+}
+</style>
+</head>
+
+<body>
+
+<header id="header">
+  <nav>
+    <a href="#mission">Mission</a>
+    <a href="#notice">Notices</a>
+    <a href="#leadership">Leadership</a>
+    <a href="#directorates">Directorates</a>
+    <a href="#pioneers">Pioneers</a>
+  </nav>
+  <a class="instagram" href="#"><i class="fab fa-instagram"></i></a>
+</header>
+
+<section class="hero show">
+  <img src="logo.png">
+  <h1>Online Integrity & Awareness</h1>
+  <p>Building safer digital spaces for students.</p>
+  <div>
+    <a class="btn" href="#forms">Join Management</a>
+    <a class="btn" href="#forms">Data Gathering Form</a>
+  </div>
+</section>
+
+<section id="mission">
+  <h2 class="section-title">Our Mission</h2>
+  <p>We promote online integrity, cyber safety, and psychological wellbeing.</p>
+</section>
+
+<section id="notice">
+  <h2 class="section-title">Announcements</h2>
+  <div class="notice pinned">
+    <strong>Orientation Session</strong>
+    <p>Mandatory online safety awareness session.</p>
+  </div>
+  <div class="notice">
+    <strong>Forms Open</strong>
+    <p>Submit responses via the forms below.</p>
+  </div>
+</section>
+
+<section id="leadership">
+  <h2 class="section-title">Leadership</h2>
+  <div class="carousel" data-group="leadership"></div>
+</section>
+
+<section id="directorates">
+  <h2 class="section-title">Directorates</h2>
+  <div class="carousel" data-group="directorates"></div>
+</section>
+
+<section id="pioneers">
+  <h2 class="section-title">Pioneers</h2>
+  <div class="carousel" data-group="pioneers"></div>
+</section>
+
+<section id="forms">
+  <h2 class="section-title">Forms</h2>
+  <a class="btn" href="#">Join Management</a>
+  <a class="btn" href="#">Data Gathering Form</a>
+</section>
+
+<footer>
+  <p>Online Integrity & Awareness Society</p>
+</footer>
+
+<div class="feedback-btn" onclick="feedback.style.display='flex'">Feedback</div>
+
+<div class="modal" id="feedback">
+  <div class="modal-content">
+    <h3>Send Feedback</h3>
+    <input placeholder="Your name">
+    <textarea placeholder="Your message"></textarea>
+    <a class="btn" onclick="feedback.style.display='none'">Send</a>
+  </div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="close" onclick="overlay.classList.remove('open')">✕</div>
+  <div class="profile">
+    <img id="pimg">
+    <h2 id="pname"></h2>
+    <p id="prole"></p>
+    <p id="pintro"></p>
+  </div>
+</div>
+
+<script>
+const data={
+ leadership:[
+  {n:"Ayan Farrukh",r:"Founder",i:"ayan.jpg",d:"Founder of OIA Society."},
+  {n:"Israr Gujjar",r:"Head of Departments",i:"israr.jpg",d:"Oversees all departments."}
+ ],
+ directorates:[
+  {n:"Director A",r:"Cyber Safety",i:"ayan.jpg",d:"Leads cyber initiatives."}
+ ],
+ pioneers:[
+  {n:"Pioneer X",r:"Founding Member",i:"israr.jpg",d:"Early contributor."}
+ ]
+};
+
+document.querySelectorAll(".carousel").forEach(c=>{
+ let idx=0;
+ const key=c.dataset.group;
+
+ const left=document.createElement("div");
+ left.className="arrow"; left.textContent="⬅";
+ const right=document.createElement("div");
+ right.className="arrow"; right.textContent="➡";
+ const card=document.createElement("div");
+
+ c.append(left,card,right);
+
+ function render(){
+  const p=data[key][idx];
+  card.className="card";
+  card.innerHTML=`<img src="${p.i}"><h3>${p.n}</h3><p>${p.r}</p>`;
+  card.onclick=()=>openProfile(p);
+ }
+ left.onclick=()=>{idx=(idx-1+data[key].length)%data[key].length;render()}
+ right.onclick=()=>{idx=(idx+1)%data[key].length;render()}
+ render();
+});
+
+function openProfile(p){
+ overlay.classList.add("open");
+ pimg.src=p.i;
+ pname.textContent=p.n;
+ prole.textContent=p.r;
+ pintro.textContent=p.d;
+}
+
+window.addEventListener("scroll",()=>{
+ document.querySelectorAll("section").forEach(s=>{
+  const r=s.getBoundingClientRect();
+  if(r.top<innerHeight-120 && r.bottom>120) s.classList.add("show");
+ });
+});
+</script>
+
+</body>
+</html>
