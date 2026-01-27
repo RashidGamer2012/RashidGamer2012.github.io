@@ -6,6 +6,7 @@
 <title>OIA Society</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
 <style>
 :root{
@@ -18,30 +19,33 @@
 }
 
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
-body{background:var(--bg);color:var(--text);overflow-x:hidden}
+body{background:var(--bg);color:var(--text)}
 a{text-decoration:none;color:inherit}
 
 /* ================= HEADER ================= */
 header{
-  position:fixed;top:0;width:100%;height:70px;
+  position:fixed;
+  top:0;
+  width:100%;
+  height:70px;
   background:rgba(0,0,0,.65);
   backdrop-filter:blur(12px);
-  display:flex;justify-content:center;align-items:center;
-  z-index:1000;transition:.3s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
 }
-header.hide{transform:translateY(-100%)}
-
 nav a{
-  margin:0 1.3rem;
+  margin:0 1.2rem;
   color:var(--muted);
   font-weight:600;
 }
-nav a:hover{color:#fff}
+nav a:hover{color:white}
 
 .instagram{
   position:absolute;
   right:25px;
-  font-size:1.6rem;
+  font-size:1.7rem;
   background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af);
   -webkit-background-clip:text;
   color:transparent;
@@ -58,6 +62,7 @@ nav a:hover{color:#fff}
   color:white;
   display:inline-block;
   margin:.5rem;
+  cursor:pointer;
 }
 @keyframes grad{
   0%{background-position:0% 50%}
@@ -84,13 +89,6 @@ section{
   padding:5rem 6%;
   max-width:1200px;
   margin:auto;
-  opacity:0;
-  transform:translateY(40px);
-  transition:.8s ease;
-}
-section.show{
-  opacity:1;
-  transform:none;
 }
 .section-title{
   text-align:center;
@@ -98,7 +96,7 @@ section.show{
   margin-bottom:2rem;
 }
 
-/* ================= NOTICE BOARD ================= */
+/* ================= NOTICE ================= */
 .notice{
   background:var(--panel2);
   padding:1.5rem;
@@ -106,7 +104,6 @@ section.show{
   border-left:5px solid var(--accent);
   margin-bottom:1rem;
 }
-.notice.pinned{border-left-color:#f59e0b}
 
 /* ================= CAROUSEL ================= */
 .carousel{
@@ -122,20 +119,13 @@ section.show{
   border-radius:50%;
   background:#1f2937;
 }
-.arrow:hover{background:var(--accent)}
-
 .card{
   width:280px;
   background:var(--panel);
   border-radius:18px;
   padding:1rem;
   text-align:center;
-  animation:fade .5s ease;
   cursor:pointer;
-}
-@keyframes fade{
-  from{opacity:0;transform:scale(.9)}
-  to{opacity:1;transform:scale(1)}
 }
 .card img{
   width:100%;
@@ -143,71 +133,59 @@ section.show{
   object-fit:cover;
   border-radius:14px;
 }
-.card h3{margin:.6rem 0 .2rem}
-.card p{color:var(--muted)}
 
-/* ================= PROFILE OVERLAY ================= */
+/* ================= PROFILE ================= */
 .overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.6);
-  backdrop-filter:blur(12px);
+  background:rgba(0,0,0,.7);
   display:none;
+  align-items:center;
+  justify-content:center;
   z-index:3000;
 }
 .overlay.open{display:flex}
-
 .profile{
-  margin:auto;
   background:#020617;
   padding:2rem;
   width:90%;
   max-width:500px;
   border-radius:22px;
   text-align:center;
-  animation:slide .5s ease;
-}
-@keyframes slide{
-  from{transform:translateX(100%)}
-  to{transform:none}
 }
 .profile img{
   width:200px;
   height:200px;
   object-fit:cover;
   border-radius:50%;
-  margin-bottom:1rem;
-}
-.close{
-  position:absolute;
-  top:25px;right:30px;
-  font-size:1.5rem;
-  cursor:pointer;
 }
 
 /* ================= FEEDBACK ================= */
 .feedback-btn{
   position:fixed;
-  bottom:30px;right:30px;
+  bottom:30px;
+  right:30px;
   background:var(--accent);
   padding:1rem 1.4rem;
   border-radius:999px;
-  font-weight:600;
   cursor:pointer;
   z-index:2000;
 }
 .modal{
-  position:fixed;inset:0;
-  background:rgba(0,0,0,.6);
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
   display:none;
-  align-items:center;justify-content:center;
+  align-items:center;
+  justify-content:center;
   z-index:2500;
 }
 .modal-content{
   background:#020617;
   padding:2rem;
   border-radius:14px;
-  width:90%;max-width:450px;
+  width:90%;
+  max-width:450px;
 }
 .modal input,.modal textarea{
   width:100%;
@@ -217,6 +195,12 @@ section.show{
   border:none;
   background:#1f2937;
   color:white;
+}
+.public-feedback{
+  background:var(--panel);
+  padding:1rem;
+  border-radius:12px;
+  margin-bottom:.7rem;
 }
 
 /* ================= FOOTER ================= */
@@ -230,104 +214,142 @@ footer{
 
 <body>
 
-<header id="header">
-  <nav>
-    <a href="#mission">Mission</a>
-    <a href="#notice">Notices</a>
-    <a href="#leadership">Leadership</a>
-    <a href="#directorates">Directorates</a>
-    <a href="#pioneers">Pioneers</a>
-  </nav>
-  <a class="instagram" href="#"><i class="fab fa-instagram"></i></a>
+<header>
+<nav>
+  <a href="#mission">Mission</a>
+  <a href="#notice">Notices</a>
+  <a href="#leadership">Leadership</a>
+  <a href="#directorates">Directorates</a>
+  <a href="#pioneers">Pioneers</a>
+  <a href="#forms">Forms</a>
+</nav>
+
+<a class="instagram"
+   href="https://www.instagram.com/oia_society/"
+   target="_blank">
+  <i class="fab fa-instagram"></i>
+</a>
 </header>
 
-<section class="hero show">
+<section class="hero">
   <img src="logo.png">
   <h1>Online Integrity & Awareness</h1>
   <p>Building safer digital spaces for students.</p>
+
   <div>
-    <a class="btn" href="#forms">Join Management</a>
-    <a class="btn" href="#forms">Data Gathering Form</a>
+    <a class="btn"
+       href="https://docs.google.com/forms/d/e/1FAIpQLSfwd55_BpKDIZWuOIhoma8n3rCmhNxRq0ZY-OkYTpSoKUiQ1g/viewform"
+       target="_blank">
+      Volunteer Registration
+    </a>
+
+    <span class="btn" style="opacity:.6;cursor:not-allowed;">
+      Database / Analytical Form
+    </span>
   </div>
 </section>
 
 <section id="mission">
-  <h2 class="section-title">Our Mission</h2>
-  <p>This society is established with the aim of promoting awareness and providing psychological support sessions for youth experiencing bullying and harassment. We strongly advocate for online integrity, ensuring that everyone feels safe, respected, and free to express themselves. In addition to supporting victims of online abuse, we strive to resolve conflicts through positive and constructive approaches, offering victims a safe place where they can heal and be heard. Our ultimate goal is to build a more empathetic, informed, and mentally resilient student community through awareness sessions, open discussions, and peer support initiatives..</p>
+<h2 class="section-title">Our Mission</h2>
+<p>
+Promoting awareness, psychological support, and online integrity
+to ensure safe, respectful digital spaces for all students.
+</p>
 </section>
 
 <section id="notice">
-  <h2 class="section-title">Announcements</h2>
-  <div class="notice pinned">
-    <strong>Orientation Session</strong>
-    <p>Volunteer form is given please use it to join us.</p>
-  </div>
-  <div class="notice">
-    <strong>Forms Open</strong>
-    <p>Submit responses via the forms below.</p>
-  </div>
+<h2 class="section-title">Announcements</h2>
+<div class="notice">
+  <strong>Volunteer Registration Open</strong>
+  <p>Please fill the form to join OIA Society.</p>
+</div>
 </section>
 
 <section id="leadership">
-  <h2 class="section-title">Leadership</h2>
-  <div class="carousel" data-group="leadership"></div>
+<h2 class="section-title">Leadership</h2>
+<div class="carousel" data-group="leadership"></div>
 </section>
 
 <section id="directorates">
-  <h2 class="section-title">Directorates</h2>
-  <div class="carousel" data-group="directorates"></div>
+<h2 class="section-title">Directorates</h2>
+<div class="carousel" data-group="directorates"></div>
 </section>
 
 <section id="pioneers">
-  <h2 class="section-title">Pioneers</h2>
-  <div class="carousel" data-group="pioneers"></div>
+<h2 class="section-title">Pioneers</h2>
+<div class="carousel" data-group="pioneers"></div>
 </section>
 
 <section id="forms">
-  <h2 class="section-title">Forms</h2>
-  <a class="btn" href="#">Join Management</a>
-  <a class="btn" href="#">Data Gathering Form</a>
+<h2 class="section-title">Forms</h2>
+<div style="text-align:center">
+  <a class="btn"
+     href="https://docs.google.com/forms/d/e/1FAIpQLSfwd55_BpKDIZWuOIhoma8n3rCmhNxRq0ZY-OkYTpSoKUiQ1g/viewform"
+     target="_blank">
+     Volunteer Registration
+  </a>
+
+  <span class="btn" style="opacity:.6;cursor:not-allowed;">
+    Database / Analytical Form (Coming Soon)
+  </span>
+</div>
+</section>
+
+<section id="feedbacks">
+<h2 class="section-title">Public Feedback</h2>
+<div id="feedbackList"></div>
 </section>
 
 <footer>
-  <p>Online Integrity & Awareness Society</p>
+<p>Online Integrity & Awareness Society</p>
 </footer>
 
-<div class="feedback-btn" onclick="feedback.style.display='flex'">Feedback</div>
+<div class="feedback-btn btn" onclick="openFeedback()">Feedback</div>
 
-<div class="modal" id="feedback">
-  <div class="modal-content">
-    <h3>Send Feedback</h3>
-    <input placeholder="Your name">
-    <textarea placeholder="Your message"></textarea>
-    <a class="btn" onclick="feedback.style.display='none'">Send</a>
-  </div>
+<div class="modal" id="feedbackModal">
+<div class="modal-content">
+<h3>Send Feedback</h3>
+<input id="fname" placeholder="Your name">
+<textarea id="fmsg" placeholder="Your message"></textarea>
+<label>
+<input type="checkbox" id="coreOnly"> Core team only
+</label>
+<br><br>
+<div class="btn" onclick="sendFeedback()">Send</div>
+</div>
 </div>
 
 <div class="overlay" id="overlay">
-  <div class="close" onclick="overlay.classList.remove('open')">✕</div>
-  <div class="profile">
-    <img id="pimg">
-    <h2 id="pname"></h2>
-    <p id="prole"></p>
-    <p id="pintro"></p>
-  </div>
+<div class="profile">
+<img id="pimg">
+<h2 id="pname"></h2>
+<p id="prole"></p>
+<p id="pintro"></p>
+<div class="btn" onclick="overlay.classList.remove('open')">Close</div>
+</div>
 </div>
 
 <script>
+emailjs.init("dTuyIgPSqpHqg7u5A");
+
+const overlay=document.getElementById("overlay");
+const feedbackModal=document.getElementById("feedbackModal");
+const feedbackList=document.getElementById("feedbackList");
+
 const data={
  leadership:[
-  {n:"Ayan Farrukh",r:"Founder",i:"ayan.jpg",d:"Founder of OIA Society."},
-  {n:"Israr Gujjar",r:"Head of Departments",i:"israr.jpg",d:"Oversees all departments."}
+  {n:"Ayan Farrukh",r:"Founder",i:"ayan.jpg",d:"Founder of OIA Society"},
+  {n:"Israr Gujjar",r:"Head of Departments",i:"israr.jpg",d:"Oversees all departments"}
  ],
  directorates:[
-  {n:"Muhammad Karam Rashid",r:"Director of IT and techncial affairs",i:"Karam.png",d:"Leads our online initiatives."}
-  {n:"Aimal",r:"Head of ambassadors",i:"aimal.jpg",d:"Leads our ambassadors to spread awareness."}
-  {n:"Abdul Rafay",r:"Director of IT and techncial affairs",i:"rafay.jpg",d:"Leads our online initiatives."}
+  {n:"Muhammad Karam Rashid",r:"Director IT",i:"karam.png",d:"Leads technical affairs"},
+  {n:"Aimal",r:"Head of Ambassadors",i:"aimal.jpg",d:"Leads ambassadors"},
+  {n:"Abdul Rafay",r:"Director IT",i:"rafay.jpg",d:"Manages tech initiatives"}
+ ],
  pioneers:[
-  {n:"Eman Anwar",r:"one of the Founding Member",i:"eman.jpg",d:"Early contributer."}
-  {n:"Ghous Ali Warraich",r:"one of the Founding Member",i:"ali.jpg",d:"Early supporter."}
-  {n:"Emaan",r:"one of the Founding Member",i:"emaan.jpg",d:"Early contributer."}
+  {n:"Eman Anwar",r:"Founding Member",i:"eman.jpg",d:"Early contributor"},
+  {n:"Ghous Ali Warraich",r:"Founding Member",i:"ali.jpg",d:"Early supporter"},
+  {n:"Emaan",r:"Founding Member",i:"emaan.jpg",d:"Early contributor"}
  ]
 };
 
@@ -362,14 +384,36 @@ function openProfile(p){
  pintro.textContent=p.d;
 }
 
-window.addEventListener("scroll",()=>{
- document.querySelectorAll("section").forEach(s=>{
-  const r=s.getBoundingClientRect();
-  if(r.top<innerHeight-120 && r.bottom>120) s.classList.add("show");
- });
-});
+function openFeedback(){
+ feedbackModal.style.display="flex";
+}
+
+function sendFeedback(){
+ const name=fname.value.trim();
+ const msg=fmsg.value.trim();
+ const core=coreOnly.checked;
+ if(!name||!msg) return alert("Fill all fields");
+
+ if(!core){
+  const div=document.createElement("div");
+  div.className="public-feedback";
+  div.innerHTML=`<strong>${name}</strong><p>${msg}</p>`;
+  feedbackList.prepend(div);
+ }
+
+ if(core){
+  emailjs.send("service_76vsqav","template_wglxm9z",{
+    from_name:name,
+    message:msg
+  });
+ }
+
+ fname.value="";
+ fmsg.value="";
+ coreOnly.checked=false;
+ feedbackModal.style.display="none";
+}
 </script>
 
 </body>
 </html>
-
